@@ -7,3 +7,15 @@ rvm:
   - 2.2.2
   - 2.1.6
   - 2.0.0
+
+before_install:
+  # Install cisco_os_shim manually since it isn't published yet
+  git clone https://github.com/cisco/cisco-nxapi.git
+  cd cisco-nxapi
+  gem install bundle
+  bundle install
+  bundle exec rake build
+  gemFile=$(find . -type f -print | grep 'cisco_os_shim-[0-9].*\.gem')
+  gem install --local $gemFile
+  cd ..
+  rm -rf cisco-nxapi
